@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>逻辑判断 600 题</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">600</span>
+        <div>
+          <h1>逻辑判断</h1>
+          <p>截图版在线答题</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" data-view="practice" title="练习">练习</button>
+        <button class="nav-btn" data-view="wrongbook" title="错题本">错题本</button>
+        <button class="nav-btn" data-view="settings" title="答案设置">答案</button>
+      </nav>
+      <div class="set-grid" id="setGrid"></div>
+    </aside>
+
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <div class="eyebrow" id="rangeLabel">第 1-20 题</div>
+          <h2 id="setTitle">练习题 01</h2>
+        </div>
+        <div class="timer" id="timer">00:00:00</div>
+        <div class="actions">
+          <button class="icon-btn" id="zoomOut" title="缩小">-</button>
+          <button class="icon-btn" id="zoomIn" title="放大">+</button>
+          <button class="primary-btn" id="startBtn">开始</button>
+          <button class="primary-btn ghost" id="submitBtn">交卷</button>
+        </div>
+      </section>
+
+      <section class="workspace practice-view" id="practiceView">
+        <div class="paper-panel">
+          <div class="tabs">
+            <button class="tab active" data-tab="questions">题本</button>
+            <button class="tab" data-tab="solutions">解析</button>
+          </div>
+          <div class="page-stack" id="pageStack"></div>
+        </div>
+
+        <aside class="answer-panel">
+          <div class="panel-head">
+            <h3>答题卡</h3>
+            <span id="answeredCount">0/20</span>
+          </div>
+          <div id="answerSheet" class="answer-sheet"></div>
+          <div class="result-card" id="resultCard"></div>
+        </aside>
+      </section>
+
+      <section class="workspace hidden" id="wrongbookView">
+        <div class="wide-panel">
+          <div class="panel-head">
+            <h3>错题本</h3>
+            <button class="secondary-btn" id="clearResolvedBtn">清理已掌握</button>
+          </div>
+          <div class="wrong-list" id="wrongList"></div>
+        </div>
+      </section>
+
+      <section class="workspace hidden" id="settingsView">
+        <div class="wide-panel">
+          <div class="panel-head">
+            <h3>答案设置</h3>
+            <button class="secondary-btn" id="saveAnswersBtn">保存答案</button>
+          </div>
+          <p class="hint">每套 20 个答案，支持连续输入，如 ABCDABCDABCDABCDABCD。录入后交卷会自动判分并整理错题。</p>
+          <textarea id="answerBulk" rows="3" placeholder="输入当前套题答案"></textarea>
+          <div class="answer-key-grid" id="answerKeyGrid"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="data/config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
