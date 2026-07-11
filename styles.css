@@ -14,6 +14,7 @@
 }
 body {
   margin: 0;
+  overflow: hidden;
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   background: var(--bg);
@@ -22,11 +23,13 @@ body {
 button, textarea, select { font: inherit; }
 button { cursor: pointer; }
 .app-shell {
-  min-height: 100vh;
+  height: 100vh;
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
+  overflow: hidden;
 }
 .sidebar {
+  min-height: 0;
   border-right: 1px solid var(--line);
   background: #eef3ed;
   padding: 20px 16px;
@@ -97,9 +100,12 @@ h1, h2, h3, p { margin: 0; }
   background: var(--good);
 }
 .main {
+  height: 100vh;
   min-width: 0;
+  min-height: 0;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
 }
 .topbar {
   min-height: 86px;
@@ -111,8 +117,6 @@ h1, h2, h3, p { margin: 0; }
   align-items: center;
   gap: 18px;
   padding: 16px 22px;
-  position: sticky;
-  top: 0;
   z-index: 10;
 }
 .topbar h2 { font-size: 26px; }
@@ -146,10 +150,12 @@ h1, h2, h3, p { margin: 0; }
 }
 .workspace {
   min-height: 0;
+  height: 100%;
   padding: 18px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
   gap: 18px;
+  overflow: hidden;
 }
 .paper-panel, .answer-panel, .wide-panel {
   min-width: 0;
@@ -159,6 +165,7 @@ h1, h2, h3, p { margin: 0; }
   box-shadow: var(--shadow);
 }
 .paper-panel {
+  min-height: 0;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   overflow: hidden;
@@ -187,6 +194,8 @@ h1, h2, h3, p { margin: 0; }
   box-shadow: 0 8px 22px rgba(31, 41, 51, 0.12);
 }
 .answer-panel {
+  min-height: 0;
+  max-height: 100%;
   padding: 16px;
   overflow: auto;
 }
@@ -286,14 +295,79 @@ textarea {
   border-radius: 8px;
 }
 @media (max-width: 980px) {
-  .app-shell { grid-template-columns: 1fr; }
-  .sidebar { position: static; }
-  .workspace { grid-template-columns: 1fr; }
-  .topbar { grid-template-columns: 1fr; align-items: start; }
+  .app-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .sidebar {
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 12px;
+  }
+  .brand { display: none; }
+  .set-grid {
+    grid-template-columns: repeat(15, minmax(42px, 1fr));
+    max-height: 96px;
+  }
+  .main { height: auto; min-height: 0; }
+  .workspace {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 34vw);
+    padding: 12px;
+  }
+  .topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 74px;
+    padding: 10px 12px;
+  }
+  .topbar h2 { font-size: 21px; }
   .actions { flex-wrap: wrap; }
+  .answer-panel {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    max-height: 100%;
+  }
 }
 @media (max-width: 560px) {
+  body { overflow: auto; }
+  .app-shell {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+  .main {
+    height: auto;
+    overflow: visible;
+  }
   .sidebar, .topbar, .workspace { padding-left: 12px; padding-right: 12px; }
+  .topbar { position: sticky; top: 0; }
+  .workspace {
+    height: auto;
+    overflow: visible;
+    grid-template-columns: 1fr;
+    padding-bottom: 210px;
+  }
+  .paper-panel {
+    min-height: 72vh;
+    height: auto;
+  }
+  .page-stack {
+    max-height: none;
+    overflow: visible;
+  }
+  .answer-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    max-height: 42vh;
+    border-radius: 8px 8px 0 0;
+  }
+  .answer-sheet { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .set-grid { grid-template-columns: repeat(6, 1fr); }
   .answer-row { grid-template-columns: 30px repeat(4, 1fr) 34px; }
   .choice, .star-btn { min-height: 32px; padding: 0; }
