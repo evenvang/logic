@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>逻辑判断 600 题</title>
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
   <div class="app-shell">
@@ -44,6 +44,11 @@
           <div class="tabs">
             <button class="tab active" data-tab="questions">题本</button>
             <button class="tab" data-tab="solutions">解析</button>
+            <div class="page-controls" aria-label="页面切换">
+              <button class="page-btn" id="prevPageBtn" title="上一页">上一页</button>
+              <span class="page-indicator" id="pageIndicator">1/1</span>
+              <button class="page-btn" id="nextPageBtn" title="下一页">下一页</button>
+            </div>
           </div>
           <div class="page-stack" id="pageStack"></div>
         </div>
@@ -83,6 +88,6 @@
   </div>
 
   <script src="data/config.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>
