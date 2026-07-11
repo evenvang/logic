@@ -173,10 +173,38 @@ h1, h2, h3, p { margin: 0; }
 .tabs {
   display: flex;
   gap: 8px;
+  align-items: center;
   padding: 12px;
   border-bottom: 1px solid var(--line);
 }
 .tab { min-width: 86px; }
+.page-controls {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.page-btn {
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0 12px;
+  background: white;
+  color: var(--ink);
+  font-weight: 700;
+}
+.page-btn:disabled {
+  cursor: not-allowed;
+  color: #a3abb5;
+  background: #f3f5f2;
+}
+.page-indicator {
+  min-width: 56px;
+  text-align: center;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
 .page-stack {
   overflow: auto;
   padding: 18px;
@@ -324,6 +352,12 @@ textarea {
   }
   .topbar h2 { font-size: 21px; }
   .actions { flex-wrap: wrap; }
+  .tabs { flex-wrap: wrap; }
+  .page-controls {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
   .answer-panel {
     position: sticky;
     top: 0;

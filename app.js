@@ -15,9 +15,12 @@ const answerSheet = document.getElementById("answerSheet");
 const answeredCount = document.getElementById("answeredCount");
 const timerEl = document.getElementById("timer");
 const resultCard = document.getElementById("resultCard");
+const prevPageBtn = document.getElementById("prevPageBtn");
+const nextPageBtn = document.getElementById("nextPageBtn");
+const pageIndicator = document.getElementById("pageIndicator");
 
 function loadState() {
-  const fallback = { attempts: {}, answers: {}, wrongbook: {}, answerKeys: {}, currentSetId: 1, zoom: 900 };
+  const fallback = { attempts: {}, answers: {}, wrongbook: {}, answerKeys: {}, pageCursors: {}, currentSetId: 1, zoom: 900 };
   try {
     return { ...fallback, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") };
   } catch {
@@ -68,19 +71,58 @@ function renderHeader() {
   rangeLabel.textContent = `第 ${set.questionStart}-${set.questionEnd} 题`;
 }
 
+function getActivePages() {
+  const set = getSet();
+  return activeTab === "questions" ? set.questionPages : set.solutionPages;
+}
+
+function pageCursorKey(setId = currentSetId, tab = activeTab) {
+  return `${setId}:${tab}`;
+}
+
+function getPageIndex() {
+  if (!state.pageCursors) state.pageCursors = {};
+  const pages = getActivePages();
+  const key = pageCursorKey();
+  const saved = Number(state.pageCursors[key] || 0);
+  return Math.max(0, Math.min(saved, Math.max(0, pages.length - 1)));
+}
+
+function setPageIndex(index) {
+  if (!state.pageCursors) state.pageCursors = {};
+  const pages = getActivePages();
+  const nextIndex = Math.max(0, Math.min(index, Math.max(0, pages.length - 1)));
+  state.pageCursors[pageCursorKey()] = nextIndex;
+  saveState();
+}
+
 function renderPages() {
   const set = getSet();
-  const pages = activeTab === "questions" ? set.questionPages : set.solutionPages;
+  const pages = getActivePages();
+  const pageIndex = getPageIndex();
+  document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === activeTab));
   pageStack.style.setProperty("--page-width", `${zoom}px`);
   pageStack.innerHTML = "";
-  pages.forEach((src, idx) => {
-    const img = document.createElement("img");
-    img.className = "page-img";
-    img.loading = idx < 2 ? "eager" : "lazy";
-    img.alt = `${set.title} ${activeTab === "questions" ? "题本" : "解析"} 第 ${idx + 1} 页`;
-    img.src = src;
-    pageStack.appendChild(img);
-  });
+
+  if (!pages.length) {
+    pageStack.innerHTML = '<div class="empty">当前没有可显示页面。</div>';
+    pageIndicator.textContent = "0/0";
+    prevPageBtn.disabled = true;
+    nextPageBtn.disabled = true;
+    return;
+  }
+
+  const img = document.createElement("img");
+  img.className = "page-img";
+  img.loading = "eager";
+  img.alt = `${set.title} ${activeTab === "questions" ? "题本" : "解析"} 第 ${pageIndex + 1} 页`;
+  img.src = pages[pageIndex];
+  pageStack.appendChild(img);
+  pageStack.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+  pageIndicator.textContent = `${pageIndex + 1}/${pages.length}`;
+  prevPageBtn.disabled = pageIndex === 0;
+  nextPageBtn.disabled = pageIndex >= pages.length - 1;
 }
 
 function renderAnswerSheet() {
@@ -371,6 +413,14 @@ document.querySelectorAll(".tab").forEach((btn) => btn.addEventListener("click",
   document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === activeTab));
   renderPages();
 }));
+prevPageBtn.addEventListener("click", () => {
+  setPageIndex(getPageIndex() - 1);
+  renderPages();
+});
+nextPageBtn.addEventListener("click", () => {
+  setPageIndex(getPageIndex() + 1);
+  renderPages();
+});
 document.getElementById("startBtn").addEventListener("click", startSet);
 document.getElementById("submitBtn").addEventListener("click", submitSet);
 document.getElementById("zoomIn").addEventListener("click", () => {
