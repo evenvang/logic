@@ -420,7 +420,13 @@ textarea {
   .answer-panel .result-card {
     width: min(100%, 680px);
   }
-  .answer-sheet { grid-template-columns: repeat(2, minmax(0, 308px)); justify-content: center; }
+  .answer-panel .answer-sheet {
+    width: min(100%, 340px);
+  }
+  .answer-sheet {
+    grid-template-columns: 1fr;
+    justify-content: center;
+  }
   .set-grid { grid-template-columns: repeat(6, 1fr); }
   .answer-row { grid-template-columns: 30px repeat(4, 1fr) 34px; }
   .choice, .star-btn { min-height: 32px; padding: 0; }
