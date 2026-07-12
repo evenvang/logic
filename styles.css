@@ -226,6 +226,9 @@ h1, h2, h3, p { margin: 0; }
   max-height: 100%;
   padding: 16px;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .panel-head {
   display: flex;
@@ -233,6 +236,11 @@ h1, h2, h3, p { margin: 0; }
   align-items: center;
   gap: 12px;
   margin-bottom: 14px;
+}
+.answer-panel .panel-head,
+.answer-panel .answer-sheet,
+.answer-panel .result-card {
+  width: min(100%, 308px);
 }
 .answer-sheet, .answer-key-grid {
   display: grid;
@@ -401,7 +409,12 @@ textarea {
     max-height: 42vh;
     border-radius: 8px 8px 0 0;
   }
-  .answer-sheet { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .answer-panel .panel-head,
+  .answer-panel .answer-sheet,
+  .answer-panel .result-card {
+    width: min(100%, 680px);
+  }
+  .answer-sheet { grid-template-columns: repeat(2, minmax(0, 308px)); justify-content: center; }
   .set-grid { grid-template-columns: repeat(6, 1fr); }
   .answer-row { grid-template-columns: 30px repeat(4, 1fr) 34px; }
   .choice, .star-btn { min-height: 32px; padding: 0; }
